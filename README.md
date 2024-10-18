@@ -11,7 +11,9 @@ Run a cronjob with the following commands:
 
 (3) run the flask, app.py, which only currently serves the json file.
 > python3 app.py
+
 will by default run the flask server at localhost:5000. Then
 
 > wget 127.0.0.1:5000
+
 will by default write the json object to index.html
