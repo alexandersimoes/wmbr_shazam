@@ -3,6 +3,7 @@ from shazamio import Shazam
 import datetime
 import json
 import sys
+import os
 
 
 async def main():
@@ -22,8 +23,24 @@ async def main():
   for k, v in album_info.items():
     info_dict[k] = v
 
+  # Create templates directory if it doesn't exist
+  os.makedirs('templates', exist_ok=True)
+
+  # Read existing data first
+  try:
+    with open("templates/track_info.json", "r") as infile:
+      existing_data = json.load(infile)
+      if not isinstance(existing_data, list):
+        existing_data = []
+  except (FileNotFoundError, json.JSONDecodeError):
+    existing_data = []
+
+  # Append new info to the list
+  existing_data.append(info_dict)
+
+  # Write back the combined data
   with open("templates/track_info.json", "w") as outfile:
-    outfile.write(json.dumps(info_dict))
+    outfile.write(json.dumps(existing_data))
 
 if __name__ == "__main__":
   asyncio.run(main())

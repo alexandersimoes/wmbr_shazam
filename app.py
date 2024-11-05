@@ -21,5 +21,16 @@ def home():
   return response
 
 
+@app.route('/table')
+def show_table():
+  try:
+    with open('templates/track_info.json', 'r') as file:
+      data = json.load(file)
+  except (FileNotFoundError, json.JSONDecodeError):
+    data = []
+
+  return render_template('table.html', data=data)
+
+
 if __name__ == '__main__':
   app.run(debug=True)
