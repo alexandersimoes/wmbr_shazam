@@ -21,12 +21,15 @@
     </style>
 </head>
 <body>
-    <h1>Trackzzzz Information</h1>
+    <h1>Track Information</h1>
     <table>
         <thead>
             <tr>
+                <th>Time</th>
                 {% for column in data[0].keys() %}
-                <th>{{ column }}</th>
+                    {% if column != "Last Updated" %}
+                        <th>{{ column }}</th>
+                    {% endif %}
                 {% endfor %}
             </tr>
         </thead>
@@ -35,8 +38,20 @@
             {% for row in data %}
                 {% if row.Title != previous.title or row.Artist != previous.artist %}
                     <tr>
-                        {% for value in row.values() %}
-                        <td>{{ value }}</td>
+                        <td>{{ datetime.strptime(row["Last Updated"], '%Y-%m-%d %H:%M:%S EST').strftime('%a %b %-d %-I:%M %p') }}</td>
+                        {% for key, value in row.items() %}
+                            {% if key != "Last Updated" %}
+                                <td>
+                                    {% if key == "Apple Stream Link" %}
+                                        <audio controls>
+                                            <source src="{{ value }}" type="audio/mp4">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    {% else %}
+                                        {{ value }}
+                                    {% endif %}
+                                </td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                     {% set previous.title = row.Title %}

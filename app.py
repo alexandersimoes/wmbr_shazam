@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 import json
-
+from datetime import datetime
 app = Flask(__name__)
 
 
@@ -29,8 +29,8 @@ def show_table():
   except (FileNotFoundError, json.JSONDecodeError):
     data = []
 
-  return render_template('table.html', data=data)
+  return render_template('table.html', data=data, datetime=datetime)
 
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run(debug=True, port=5001)
