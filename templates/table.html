@@ -38,7 +38,30 @@
             {% for row in data %}
                 {% if row.Title != previous.title or row.Artist != previous.artist %}
                     <tr>
-                        <td>{{ datetime.strptime(row["Last Updated"], '%Y-%m-%d %H:%M:%S EST').strftime('%a %b %-d %-I:%M %p') }}</td>
+                        <td>
+                            {% set timestamp = row["Last Updated"] %}
+                            {% if " UTC" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S UTC').strftime('%a %b %-d %-I:%M %p') }}
+                            {% elif " EST" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S EST').strftime('%a %b %-d %-I:%M %p') }}
+                            {% elif " PST" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S PST').strftime('%a %b %-d %-I:%M %p') }}
+                            {% elif " MST" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S MST').strftime('%a %b %-d %-I:%M %p') }}
+                            {% elif " CST" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S CST').strftime('%a %b %-d %-I:%M %p') }}
+                            {% elif " EDT" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S EDT').strftime('%a %b %-d %-I:%M %p') }}
+                            {% elif " PDT" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S PDT').strftime('%a %b %-d %-I:%M %p') }}
+                            {% elif " MDT" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S MDT').strftime('%a %b %-d %-I:%M %p') }}
+                            {% elif " CDT" in timestamp %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S CDT').strftime('%a %b %-d %-I:%M %p') }}
+                            {% else %}
+                                {{ datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S').strftime('%a %b %-d %-I:%M %p') }}
+                            {% endif %}
+                        </td>
                         {% for key, value in row.items() %}
                             {% if key != "Last Updated" %}
                                 <td>
