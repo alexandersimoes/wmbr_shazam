@@ -8,7 +8,12 @@ import os
 
 async def main():
   shazam = Shazam()
-  D = await shazam.recognize('capture.mp3')
+  script_dir = os.path.dirname(os.path.abspath(__file__))
+  capture_path = os.path.join(script_dir, 'capture.mp3')
+  templates_dir = os.path.join(script_dir, 'templates')
+  json_file_path = os.path.join(templates_dir, 'track_info.json')
+  
+  D = await shazam.recognize(capture_path)
   if not len(D["matches"]):
     print("No matches found!")
     sys.exit()
@@ -24,11 +29,11 @@ async def main():
     info_dict[k] = v
 
   # Create templates directory if it doesn't exist
-  os.makedirs('templates', exist_ok=True)
+  os.makedirs(templates_dir, exist_ok=True)
 
   # Read existing data first
   try:
-    with open("templates/track_info.json", "r") as infile:
+    with open(json_file_path, "r") as infile:
       existing_data = json.load(infile)
       if not isinstance(existing_data, list):
         existing_data = []
@@ -39,7 +44,7 @@ async def main():
   existing_data.append(info_dict)
 
   # Write back the combined data
-  with open("templates/track_info.json", "w") as outfile:
+  with open(json_file_path, "w") as outfile:
     outfile.write(json.dumps(existing_data))
 
 if __name__ == "__main__":
