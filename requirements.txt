@@ -2,3 +2,4 @@ shazamio
 pydub
 requests
 flask
+bs4
